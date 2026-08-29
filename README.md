@@ -1,37 +1,39 @@
-# Prof - Campus Connect
+# Prof - Campus Connect 🎓
 
-An all-in-one campus app where Lecturers and Students connect, manage courses, tasks, and classes.
+An all-in-one campus app where **Lecturers and Students** connect, manage courses, assignments, and academic progress in one place.
 
-Built 100% on mobile with React Native + Expo.
+Built with React Native + Expo by **Vincent Okafi**.
 
-## Who is it for?
+### ✨ Features
 
-### 👨‍🏫 For Lecturers (Professors)
-- Create and manage courses
+**For Lecturers 👨‍🏫**
+- Create and manage courses with unique codes
 - Post assignments and announcements
-- Track student submissions
-- Manage grading and tasks
+- Track 42+ students and pending submissions
+- View course analytics
 
-### 👨‍🎓 For Students
-- Join courses with a code
-- View assignments and materials
-- Submit work and track grades
-- Get notifications from lecturers
+**For Students 👨‍🎓**
+- Join courses with a code (e.g. CSC 201)
+- View tasks, due dates, and GPA
+- Submit assignments
+- Clean dashboard for enrolled courses
 
-## Features
-- 🔐 Dual Login - Choose Student or Lecturer
-- 📚 Course Management
-- ✅ Assignment & Task Tracker
-- 💬 Announcements
-- 📱 Works on Android & iOS
+### 📱 Screens
+- Welcome / Role Selector
+- Lecturer Dashboard (Courses, Students, Pending)
+- Student Dashboard (My Courses, Tasks Due, GPA)
+- Create Course Modal
+- Join Course Modal
 
-## Tech Stack
+### 🚀 Tech Stack
 - React Native
-- Expo
-- JavaScript
+- Expo SDK 51+
+- React Hooks (useState)
+- StyleSheet API
 
-## Vision
-To bridge the gap between lecturers and students in one simple app.
+### 🛠️ How to Run
 
-## Author
-Vincent Okafi
+1. Clone the repo
+```bash
+git clone https://github.com/Vinok1ng/prof-campus-connect.git
+cd prof-campus-connect
