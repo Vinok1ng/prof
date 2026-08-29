@@ -1,9 +1,22 @@
-# professor-app-v2
+# Prof - Professor Manager App
 
-This is my professor app project.
+A simple mobile app for professors to manage students, courses, and tasks.
 
-## What it does
-App to manage professor tasks, students, and courses.
+Built 100% on mobile with React Native + Expo.
 
-## Getting Started
-More code coming soon.
+## Features
+- 📚 Manage Courses
+- 👨‍🎓 Manage Students  
+- ✅ Task & Grading Tracker
+- 📱 Works on Android & iOS
+
+## Tech Stack
+- React Native
+- Expo
+- JavaScript
+
+## Status
+Project in progress - built entirely on phone.
+
+## Author
+Vincent Okafi
