@@ -1,4 +1,4 @@
-# Prof - Professor Manager App
+# Prof-App
 
 A simple mobile app for professors to manage students, courses, and tasks.
 
