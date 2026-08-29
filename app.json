@@ -1,13 +1,32 @@
 {
   "expo": {
     "name": "Prof - Campus Connect",
-    "slug": "prof-campus-connect",
+    "slug": "prof",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
     "splash": {
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#f8f9ff",
+      "resizeMode": "contain"
     },
-    "platforms": ["ios", "android", "web"]
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.vinok1ng.prof"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#1a1aff"
+      },
+      "package": "com.vinok1ng.prof"
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "00000000-0000-0000-0000-000000000000"
+      }
+    },
+    "description": "An all-in-one campus app where Lecturers and Students connect, manage courses, and track assignments."
   }
 }
