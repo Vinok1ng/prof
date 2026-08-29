@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "name": "Prof - Campus Connect",
+    "slug": "prof-campus-connect",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "backgroundColor": "#ffffff"
+    },
+    "platforms": ["ios", "android", "web"]
+  }
+}
