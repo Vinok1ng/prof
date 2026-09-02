@@ -1,65 +1,59 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, StatusBar, SafeAreaView, Alert, TextInput, Modal } from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 
 export default function App() {
   const [role, setRole] = useState(null);
   const [courses, setCourses] = useState([
-    { id: '1', code: 'CSC 201', title: 'Intro to Programming', students: 28, tasks: 2, lecturer: 'Prof. Okafi' },
-    { id: '2', code: 'CSC 305', title: 'Data Structures', students: 14, tasks: 1, lecturer: 'Prof. Okafi' },
+    { id: '1', code: 'CSC 201', title: 'Intro to Programming', students: 28, assignments: 2 },
+    { id: '2', code: 'CSC 305', title: 'Data Structures', students: 14, assignments: 1 },
   ]);
   const [myCourses, setMyCourses] = useState([
-    { id: '1', code: 'CSC 201', title: 'Intro to Programming', lecturer: 'Prof. Okafi', due: 'Assignment due tomorrow' },
+    { id: '1', code: 'CSC 201', title: 'Intro to Programming', lecturer: 'Dr. Okafi' }
   ]);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [newCourseCode, setNewCourseCode] = useState('');
-  const [newCourseTitle, setNewCourseTitle] = useState('');
-  const [joinCode, setJoinCode] = useState('');
+  const [showCreate, setShowCreate] = useState(false);
+  const [newCode, setNewCode] = useState('');
+  const [newTitle, setNewTitle] = useState('');
+
+  const isLecturer = role === 'lecturer';
 
   const handleCreateCourse = () => {
-    if (!newCourseCode || !newCourseTitle) {
-      Alert.alert('Error', 'Please fill course code and title');
+    if (!newCode || !newTitle) {
+      Alert.alert('Error', 'Please enter course code and title');
       return;
     }
     const newCourse = {
       id: Date.now().toString(),
-      code: newCourseCode,
-      title: newCourseTitle,
+      code: newCode,
+      title: newTitle,
       students: 0,
-      tasks: 0,
-      lecturer: 'Prof. Okafi'
+      assignments: 0,
     };
     setCourses([...courses, newCourse]);
-    setNewCourseCode('');
-    setNewCourseTitle('');
-    setModalVisible(false);
-    Alert.alert('Success', `${newCourseCode} created!`);
+    setNewCode('');
+    setNewTitle('');
+    setShowCreate(false);
+    Alert.alert('Success', `Course ${newCode} created!`);
   };
 
-  const handleJoinCourse = () => {
-    if (!joinCode) {
-      Alert.alert('Error', 'Enter course code');
-      return;
-    }
-    const found = courses.find(c => c.code.toLowerCase() === joinCode.toLowerCase());
-    if (!found) {
-      Alert.alert('Not found', 'Course code not found');
-      return;
-    }
-    if (myCourses.find(c => c.id === found.id)) {
+  const handlePostAssignment = () => {
+    Alert.alert('Post Assignment', 'Assignment posted to all students in your courses! (Feature ready for backend)');
+  };
+
+  const handleJoinCourse = (course) => {
+    if (myCourses.find(c => c.id === course.id)) {
       Alert.alert('Already joined', 'You already joined this course');
       return;
     }
-    setMyCourses([...myCourses, { ...found, due: 'No pending tasks' }]);
-    setJoinCode('');
-    setModalVisible(false);
-    Alert.alert('Joined!', `You joined ${found.code}`);
+    setMyCourses([...myCourses, { ...course, lecturer: 'Dr. Vincent Okafi' }]);
+    Alert.alert('Joined!', `You joined ${course.code}`);
   };
 
-  // WELCOME SCREEN
+  // HOME SCREEN
   if (!role) {
     return (
-      <SafeAreaView style={styles.container}>
-        <StatusBar barStyle="dark-content" backgroundColor="#f8f9ff" />
+      <View style={styles.container}>
+        <StatusBar style="dark" backgroundColor="#f8f9ff" />
         <Text style={styles.title}>Prof</Text>
         <Text style={styles.subtitle}>Campus Connect</Text>
         <Text style={styles.desc}>Where Lecturers and Students Connect</Text>
@@ -72,23 +66,22 @@ export default function App() {
           </TouchableOpacity>
 
           <TouchableOpacity style={[styles.card, styles.studentCard]} onPress={() => setRole('student')}>
-            <Text style={styles.cardEmoji}>👨‍🎓</Text>
+            <Text style={styles.cardEmoji}>🎓</Text>
             <Text style={styles.cardTitle}>I am a Student</Text>
             <Text style={styles.cardDesc}>Join courses, view tasks, submit work</Text>
           </TouchableOpacity>
         </View>
 
         <Text style={styles.footer}>Built by Vincent Okafi</Text>
-      </SafeAreaView>
+      </View>
     );
   }
 
-  // DASHBOARDS
-  const isLecturer = role === 'lecturer';
+  // DASHBOARD
   const displayCourses = isLecturer ? courses : myCourses;
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <View style={styles.safe}>
       <ScrollView contentContainerStyle={styles.dashboardContent} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.headerTitle}>{isLecturer ? 'Lecturer Dashboard' : 'Student Dashboard'}</Text>
@@ -96,89 +89,97 @@ export default function App() {
         </View>
 
         <View style={styles.statsRow}>
-          <View style={styles.stat}><Text style={styles.statNum}>{isLecturer ? courses.length : myCourses.length}</Text><Text style={styles.statLabel}>{isLecturer ? 'Courses' : 'My Courses'}</Text></View>
-          <View style={styles.stat}><Text style={styles.statNum}>{isLecturer ? '42' : '3'}</Text><Text style={styles.statLabel}>{isLecturer ? 'Students' : 'Tasks Due'}</Text></View>
+          <View style={styles.stat}><Text style={styles.statNum}>{isLecturer ? courses.length : myCourses.length}</Text><Text style={styles.statLabel}>Courses</Text></View>
+          <View style={styles.stat}><Text style={styles.statNum}>{isLecturer ? '42' : '3'}</Text><Text style={styles.statLabel}>{isLecturer ? 'Students' : 'Pending'}</Text></View>
           <View style={styles.stat}><Text style={styles.statNum}>{isLecturer ? '5' : '4.2'}</Text><Text style={styles.statLabel}>{isLecturer ? 'Pending' : 'GPA'}</Text></View>
         </View>
 
         <Text style={styles.sectionTitle}>{isLecturer ? 'My Courses' : 'My Enrolled Courses'}</Text>
+
         {displayCourses.map((c) => (
-          <View key={c.id} style={styles.listItem}>
-            <Text style={styles.listTitle}>{c.code} - {c.title}</Text>
-            <Text style={styles.listSub}>{isLecturer ? `${c.students} students • ${c.tasks} assignments` : `${c.lecturer} • ${c.due}`}</Text>
+          <View key={c.id} style={styles.courseCard}>
+            <Text style={styles.courseTitle}>{c.code} - {c.title}</Text>
+            <Text style={styles.courseMeta}>{isLecturer ? `${c.students} students • ${c.assignments} assignments` : `Lecturer: ${c.lecturer || 'Dr. Okafi'}`}</Text>
+            {!isLecturer && (
+              <TouchableOpacity style={styles.joinBtn} onPress={() => Alert.alert('Course', `${c.code}: View assignments`)}>
+                <Text style={styles.joinText}>View</Text>
+              </TouchableOpacity>
+            )}
           </View>
         ))}
 
-        <TouchableOpacity style={styles.mainBtn} onPress={() => setModalVisible(true)}>
-          <Text style={styles.mainBtnText}>{isLecturer ? '+ Create New Course' : '+ Join Course with Code'}</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.mainBtnSecondary} onPress={() => Alert.alert('Assignments', 'Assignment list coming next')}>
-          <Text style={styles.mainBtnSecondaryText}>{isLecturer ? 'Post Assignment' : 'View All Assignments'}</Text>
-        </TouchableOpacity>
-      </ScrollView>
-
-      {/* CREATE / JOIN MODAL */}
-      <Modal visible={modalVisible} transparent animationType="slide">
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalBox}>
-            <Text style={styles.modalTitle}>{isLecturer ? 'Create New Course' : 'Join Course'}</Text>
-            
-            {isLecturer ? (
-              <>
-                <TextInput style={styles.input} placeholder="Course Code e.g CSC 401" value={newCourseCode} onChangeText={setNewCourseCode} />
-                <TextInput style={styles.input} placeholder="Course Title e.g Operating Systems" value={newCourseTitle} onChangeText={setNewCourseTitle} />
-                <TouchableOpacity style={styles.mainBtn} onPress={handleCreateCourse}><Text style={styles.mainBtnText}>Create Course</Text></TouchableOpacity>
-              </>
-            ) : (
-              <>
-                <TextInput style={styles.input} placeholder="Enter Course Code e.g CSC 201" value={joinCode} onChangeText={setJoinCode} autoCapitalize="characters" />
-                <TouchableOpacity style={styles.mainBtn} onPress={handleJoinCourse}><Text style={styles.mainBtnText}>Join Now</Text></TouchableOpacity>
-              </>
+        {isLecturer ? (
+          <>
+            {showCreate && (
+              <View style={styles.createBox}>
+                <Text style={styles.createTitle}>Create New Course</Text>
+                <TextInput style={styles.input} placeholder="Course Code e.g. CSC 401" value={newCode} onChangeText={setNewCode} />
+                <TextInput style={styles.input} placeholder="Course Title e.g. AI" value={newTitle} onChangeText={setNewTitle} />
+                <TouchableOpacity style={styles.createBtn} onPress={handleCreateCourse}><Text style={styles.createBtnText}>Create Course</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => setShowCreate(false)}><Text style={styles.cancel}>Cancel</Text></TouchableOpacity>
+              </View>
             )}
 
-            <TouchableOpacity style={styles.cancelBtn} onPress={() => setModalVisible(false)}><Text style={styles.cancelText}>Cancel</Text></TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-    </SafeAreaView>
+            {!showCreate && (
+              <>
+                <TouchableOpacity style={styles.primaryBtn} onPress={() => setShowCreate(true)}><Text style={styles.primaryBtnText}>+ Create New Course</Text></TouchableOpacity>
+                <TouchableOpacity style={styles.secondaryBtn} onPress={handlePostAssignment}><Text style={styles.secondaryBtnText}>Post Assignment</Text></TouchableOpacity>
+              </>
+            )}
+          </>
+        ) : (
+          <>
+            <Text style={[styles.sectionTitle, { marginTop: 20 }]}>Available Courses</Text>
+            {courses.filter(c => !myCourses.find(mc => mc.id === c.id)).map((c) => (
+              <View key={c.id} style={styles.courseCard}>
+                <Text style={styles.courseTitle}>{c.code} - {c.title}</Text>
+                <Text style={styles.courseMeta}>{c.students} students</Text>
+                <TouchableOpacity style={styles.joinBtn} onPress={() => handleJoinCourse(c)}><Text style={styles.joinText}>+ Join</Text></TouchableOpacity>
+              </View>
+            ))}
+          </>
+        )}
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: '#f8f9ff' },
-  container: { flex: 1, backgroundColor: '#f8f9ff', alignItems: 'center', paddingTop: 60, paddingHorizontal: 20 },
-  title: { fontSize: 48, fontWeight: 'bold', color: '#1a1aff' },
-  subtitle: { fontSize: 22, fontWeight: '600', marginTop: -5, color: '#111' },
-  desc: { fontSize: 14, color: '#666', marginTop: 8, marginBottom: 30 },
-  cardBox: { width: '100%' },
-  card: { backgroundColor: 'white', borderRadius: 16, padding: 20, borderWidth: 2, marginBottom: 16, shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 8, shadowOffset: { width: 0, height: 2 }, elevation: 2 },
-  lecturerCard: { borderColor: '#1a1aff' },
-  studentCard: { borderColor: '#00c26a' },
+  container: { flex: 1, backgroundColor: '#f8f9ff', alignItems: 'center', justifyContent: 'center', padding: 20 },
+  title: { fontSize: 55, fontWeight: 'bold', color: '#1a2bff', marginTop: 40 },
+  subtitle: { fontSize: 26, fontWeight: 'bold', color: '#111' },
+  desc: { fontSize: 14, color: 'gray', marginTop: 5, marginBottom: 30 },
+  cardBox: { width: '100%', gap: 15 },
+  card: { backgroundColor: 'white', padding: 20, borderRadius: 18, borderWidth: 2, elevation: 3 },
+  lecturerCard: { borderColor: '#1a2bff' },
+  studentCard: { borderColor: '#00a652' },
   cardEmoji: { fontSize: 32 },
-  cardTitle: { fontSize: 18, fontWeight: 'bold', marginTop: 8, color: '#111' },
-  cardDesc: { fontSize: 13, color: '#666', marginTop: 4 },
-  footer: { marginTop: 30, fontSize: 12, color: '#999' },
-  dashboardContent: { paddingHorizontal: 16, paddingTop: 10, paddingBottom: 40 },
-  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, marginTop: 10 },
-  headerTitle: { fontSize: 22, fontWeight: 'bold', color: '#111' },
-  logout: { color: '#1a1aff', fontWeight: '600' },
-  statsRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20 },
-  stat: { backgroundColor: 'white', width: '31%', borderRadius: 12, padding: 14, alignItems: 'center', shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 6, shadowOffset: { width: 0, height: 2 }, elevation: 2 },
-  statNum: { fontSize: 20, fontWeight: 'bold', color: '#1a1aff' },
-  statLabel: { fontSize: 12, color: '#666', marginTop: 2 },
-  sectionTitle: { fontSize: 16, fontWeight: 'bold', marginBottom: 10, marginTop: 10, color: '#111' },
-  listItem: { backgroundColor: 'white', borderRadius: 12, padding: 16, marginBottom: 10, shadowColor: '#000', shadowOpacity: 0.03, shadowRadius: 6, shadowOffset: { width: 0, height: 1 }, elevation: 1 },
-  listTitle: { fontWeight: '600', fontSize: 14, color: '#111' },
-  listSub: { fontSize: 12, color: '#666', marginTop: 4 },
-  mainBtn: { backgroundColor: '#1a1aff', borderRadius: 12, padding: 16, alignItems: 'center', marginTop: 16 },
-  mainBtnText: { color: 'white', fontWeight: 'bold' },
-  mainBtnSecondary: { backgroundColor: 'white', borderRadius: 12, padding: 16, alignItems: 'center', marginTop: 10, borderWidth: 1, borderColor: '#ddd' },
-  mainBtnSecondaryText: { fontWeight: '600', color: '#111' },
-  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'flex-end' },
-  modalBox: { backgroundColor: 'white', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, paddingBottom: 40 },
-  modalTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 16 },
-  input: { borderWidth: 1, borderColor: '#ddd', borderRadius: 10, padding: 14, marginBottom: 12, fontSize: 14 },
-  cancelBtn: { alignItems: 'center', marginTop: 14, padding: 10 },
-  cancelText: { color: '#666', fontWeight: '600' }
+  cardTitle: { fontSize: 18, fontWeight: 'bold', marginTop: 10 },
+  cardDesc: { color: 'gray', marginTop: 4 },
+  footer: { marginTop: 40, color: 'gray' },
+  safe: { flex: 1, backgroundColor: '#f8f9ff', paddingTop: 50 },
+  dashboardContent: { padding: 18, paddingBottom: 100 },
+  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 },
+  headerTitle: { fontSize: 22, fontWeight: 'bold' },
+  logout: { color: '#1a2bff', fontWeight: 'bold' },
+  statsRow: { flexDirection: 'row', gap: 10, marginBottom: 20 },
+  stat: { flex: 1, backgroundColor: 'white', borderRadius: 14, padding: 15, alignItems: 'center', elevation: 2 },
+  statNum: { fontSize: 22, fontWeight: 'bold', color: '#1a2bff' },
+  statLabel: { color: 'gray', fontSize: 12, marginTop: 4 },
+  sectionTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 10, marginTop: 10 },
+  courseCard: { backgroundColor: 'white', padding: 15, borderRadius: 14, marginBottom: 10, elevation: 1 },
+  courseTitle: { fontWeight: 'bold', fontSize: 15 },
+  courseMeta: { color: 'gray', fontSize: 12, marginTop: 4 },
+  primaryBtn: { backgroundColor: '#1a2bff', padding: 16, borderRadius: 14, alignItems: 'center', marginTop: 20 },
+  primaryBtnText: { color: 'white', fontWeight: 'bold', fontSize: 16 },
+  secondaryBtn: { backgroundColor: 'white', padding: 16, borderRadius: 14, alignItems: 'center', marginTop: 10, borderWidth: 1, borderColor: '#ddd' },
+  secondaryBtnText: { fontWeight: 'bold' },
+  createBox: { backgroundColor: 'white', padding: 15, borderRadius: 14, marginTop: 15 },
+  createTitle: { fontWeight: 'bold', fontSize: 16, marginBottom: 10 },
+  input: { borderWidth: 1, borderColor: '#ddd', borderRadius: 10, padding: 12, marginBottom: 10 },
+  createBtn: { backgroundColor: '#1a2bff', padding: 12, borderRadius: 10, alignItems: 'center' },
+  createBtnText: { color: 'white', fontWeight: 'bold' },
+  cancel: { textAlign: 'center', marginTop: 10, color: 'gray' },
+  joinBtn: { marginTop: 10, backgroundColor: '#eef0ff', padding: 8, borderRadius: 8, alignSelf: 'flex-start' },
+  joinText: { color: '#1a2bff', fontWeight: 'bold' }
 });
