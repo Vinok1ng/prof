@@ -50,7 +50,6 @@ export default function App() {
     Alert.alert('Joined!', `You joined ${course.code} at ${school}`);
   };
 
-  // STEP 0: UNIVERSAL SCHOOL SETUP
   if (!schoolSet) {
     return (
       <View style={styles.container}>
@@ -59,29 +58,20 @@ export default function App() {
         <Text style={styles.title}>Prof</Text>
         <Text style={styles.subtitle}>Campus Connect</Text>
         <Text style={styles.desc}>Universal Platform for ALL Schools in Nigeria</Text>
-
         <View style={styles.setupBox}>
           <Text style={styles.setupTitle}>🏫 What is your school?</Text>
           <Text style={styles.setupDesc}>This app works for ANY school. Enter your school name once.</Text>
-          <TextInput 
-            style={styles.schoolInput} 
-            placeholder="e.g. Federal Polytechnic Bauchi" 
-            value={tempSchool} 
-            onChangeText={setTempSchool}
-            placeholderTextColor="#999"
-          />
+          <TextInput style={styles.schoolInput} placeholder="e.g. Federal Polytechnic Bauchi" value={tempSchool} onChangeText={setTempSchool} placeholderTextColor="#999" />
           <Text style={styles.examples}>Examples: UNIZIK, ABU Zaria, FedPoly Nekede, YABATECH...</Text>
           <TouchableOpacity style={styles.setupBtn} onPress={handleSetSchool}>
             <Text style={styles.setupBtnText}>Continue →</Text>
           </TouchableOpacity>
         </View>
-
         <Text style={styles.footer}>Built by Vincent Okafi • Works for every school</Text>
       </View>
     );
   }
 
-  // HOME
   if (!role) {
     return (
       <View style={styles.container}>
@@ -92,16 +82,15 @@ export default function App() {
         <Text style={styles.title}>Prof</Text>
         <Text style={styles.subtitle}>Campus Connect</Text>
         <Text style={styles.desc}>{school}</Text>
-
         <View style={styles.cardBox}>
           <TouchableOpacity style={[styles.card, styles.lecturerCard]} onPress={() => setRole('lecturer')}>
             <Text style={styles.cardEmoji}>👨‍🏫</Text>
-            <Text style={styles.cardTitle}>I am a Lecturer</Text>
+            <Text style={styles.cardTitle}>Lecturer</Text>
             <Text style={styles.cardDesc}>Create courses, post assignments for {school}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.card, styles.studentCard]} onPress={() => setRole('student')}>
             <Text style={styles.cardEmoji}>🎓</Text>
-            <Text style={styles.cardTitle}>I am a Student</Text>
+            <Text style={styles.cardTitle}>Student</Text>
             <Text style={styles.cardDesc}>Join courses at {school}</Text>
           </TouchableOpacity>
         </View>
@@ -122,13 +111,11 @@ export default function App() {
             <TouchableOpacity onPress={() => setSchoolSet(false)}><Text style={[styles.logout, {fontSize:10}]}>Change School</Text></TouchableOpacity>
           </View>
         </View>
-
         <View style={styles.statsRow}>
           <View style={styles.stat}><Text style={styles.statNum}>{displayCourses.length}</Text><Text style={styles.statLabel}>Courses</Text></View>
           <View style={styles.stat}><Text style={styles.statNum}>{isLecturer ? '42' : myCourses.length}</Text><Text style={styles.statLabel}>{isLecturer ? 'Students' : 'Joined'}</Text></View>
           <View style={styles.stat}><Text style={styles.statNum}>{isLecturer ? '5' : '3.8'}</Text><Text style={styles.statLabel}>{isLecturer ? 'Pending' : 'GPA'}</Text></View>
         </View>
-
         <Text style={styles.sectionTitle}>My Courses - {school}</Text>
         {displayCourses.map((c) => (
           <View key={c.id} style={styles.courseCard}>
@@ -137,7 +124,6 @@ export default function App() {
             <Text style={styles.courseMeta}>{isLecturer ? `${c.students} students` : school}</Text>
           </View>
         ))}
-
         {isLecturer ? (
           <>
             {showCreate ? (
@@ -223,4 +209,4 @@ const styles = StyleSheet.create({
   joinBtn: { marginTop: 8, backgroundColor: '#eef0ff', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8, alignSelf: 'flex-start' },
   joinText: { color: '#1a2bff', fontWeight: 'bold', fontSize: 11 },
   bottomFooter: { textAlign: 'center', marginTop: 25, color: '#aaa', fontSize: 10 }
-});        
+});              
