@@ -57,17 +57,17 @@ export default function App() {
         <View style={styles.logoBadge}><Text style={styles.logoText}>P</Text></View>
         <Text style={styles.title}>Prof</Text>
         <Text style={styles.subtitle}>Campus Connect</Text>
-        <Text style={styles.desc}>Universal Platform for ALL Schools in Nigeria</Text>
+        <Text style={styles.desc}>Universal Platform for ANY School Worldwide 🌍</Text>
         <View style={styles.setupBox}>
           <Text style={styles.setupTitle}>🏫 What is your school?</Text>
-          <Text style={styles.setupDesc}>This app works for ANY school. Enter your school name once.</Text>
-          <TextInput style={styles.schoolInput} placeholder="e.g. Federal Polytechnic Bauchi" value={tempSchool} onChangeText={setTempSchool} placeholderTextColor="#999" />
-          <Text style={styles.examples}>Examples: UNIZIK, ABU Zaria, FedPoly Nekede, YABATECH...</Text>
+          <Text style={styles.setupDesc}>Works for ANY school in the WORLD. Enter your school name once.</Text>
+          <TextInput style={styles.schoolInput} placeholder="e.g. Harvard, Oxford, Unizik..." value={tempSchool} onChangeText={setTempSchool} placeholderTextColor="#999" />
+          <Text style={styles.examples}>🌍 Harvard, Oxford, MIT, Unizik, ABU, UniLag, Toronto...</Text>
           <TouchableOpacity style={styles.setupBtn} onPress={handleSetSchool}>
             <Text style={styles.setupBtnText}>Continue →</Text>
           </TouchableOpacity>
         </View>
-        <Text style={styles.footer}>Built by Vincent Okafi • Works for every school</Text>
+        <Text style={styles.footer}>Built by Vincent Okafi • Worldwide • Global Campus App 🌍</Text>
       </View>
     );
   }
@@ -81,7 +81,7 @@ export default function App() {
         </TouchableOpacity>
         <Text style={styles.title}>Prof</Text>
         <Text style={styles.subtitle}>Campus Connect</Text>
-        <Text style={styles.desc}>{school}</Text>
+        <Text style={styles.desc}>{school} • Worldwide</Text>
         <View style={styles.cardBox}>
           <TouchableOpacity style={[styles.card, styles.lecturerCard]} onPress={() => setRole('lecturer')}>
             <Text style={styles.cardEmoji}>👨‍🏫</Text>
@@ -94,7 +94,7 @@ export default function App() {
             <Text style={styles.cardDesc}>Join courses at {school}</Text>
           </TouchableOpacity>
         </View>
-        <Text style={styles.footer}>Universal • Any School • Any Department</Text>
+        <Text style={styles.footer}>Worldwide • Any School • Any Department • Global 🌍</Text>
       </View>
     );
   }
@@ -105,7 +105,7 @@ export default function App() {
     <View style={styles.safe}>
       <ScrollView contentContainerStyle={styles.dashboardContent} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <View><Text style={styles.headerTitle}>{isLecturer ? 'Lecturer' : 'Student'} Dashboard</Text><Text style={styles.headerSub}>{school}</Text></View>
+          <View><Text style={styles.headerTitle}>{isLecturer ? 'Lecturer' : 'Student'} Dashboard</Text><Text style={styles.headerSub}>{school} 🌍 Worldwide</Text></View>
           <View style={{gap:6}}>
             <TouchableOpacity onPress={() => setRole(null)}><Text style={styles.logout}>Home</Text></TouchableOpacity>
             <TouchableOpacity onPress={() => setSchoolSet(false)}><Text style={[styles.logout, {fontSize:10}]}>Change School</Text></TouchableOpacity>
@@ -152,7 +152,7 @@ export default function App() {
             ))}
           </>
         )}
-        <Text style={styles.bottomFooter}>Prof • Universal Campus Connect • {school}</Text>
+        <Text style={styles.bottomFooter}>Prof • Universal Campus Connect • {school} • Worldwide 🌍</Text>
       </ScrollView>
     </View>
   );
@@ -209,4 +209,4 @@ const styles = StyleSheet.create({
   joinBtn: { marginTop: 8, backgroundColor: '#eef0ff', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8, alignSelf: 'flex-start' },
   joinText: { color: '#1a2bff', fontWeight: 'bold', fontSize: 11 },
   bottomFooter: { textAlign: 'center', marginTop: 25, color: '#aaa', fontSize: 10 }
-});              
+});
